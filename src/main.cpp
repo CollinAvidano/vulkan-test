@@ -162,6 +162,38 @@ private:
         createCommandBuffer();
     }
 
+
+    void initImgui() {
+        // Setup Dear ImGui context
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+        //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+        //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+        // Setup Dear ImGui style
+        ImGui::StyleColorsDark();
+        //ImGui::StyleColorsLight();
+
+        // Setup Platform/Renderer backends
+        ImGui_ImplGlfw_InitForVulkan(window, true);
+        ImGui_ImplVulkan_InitInfo init_info = {};
+        init_info.Instance = instance;
+        init_info.PhysicalDevice = physicalDevice;
+        init_info.Device = device;
+        init_info.QueueFamily = g_QueueFamily;
+        init_info.Queue = graphicsQueue;
+        //init_info.PipelineCache = g_PipelineCache;
+        //init_info.DescriptorPool = g_DescriptorPool;
+        init_info.Subpass = 0;
+        init_info.MinImageCount = g_MinImageCount;
+        init_info.ImageCount = wd->ImageCount;
+        init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
+        init_info.Allocator = g_Allocator;
+        init_info.CheckVkResultFn = check_vk_result;
+        ImGui_ImplVulkan_Init(&init_info, wd->RenderPass);
+    }
+
     void createSurface() {
         // handles os platform specific details of VHK surface for us
         if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {

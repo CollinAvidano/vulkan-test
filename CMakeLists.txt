@@ -7,12 +7,15 @@ project(renderer)
 find_package(Vulkan REQUIRED)
 find_package(glfw3 3.3 REQUIRED)
 
+set(IMGUI_DIR ./dependencies/imgui)
+
 file(GLOB_RECURSE SRC "src/*.cpp")
 
 add_executable(${PROJECT_NAME} ${SRC})
-target_include_directories(${PROJECT_NAME} PUBLIC include)
+target_include_directories(${PROJECT_NAME} PUBLIC include ${IMGUI_DIR} ${IMGUI_DIR}/backends)
 target_link_libraries(${PROJECT_NAME} PUBLIC glfw Vulkan::Vulkan)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
+
 
 # Shaders
 function(compile_shaders TARGET_NAME)
